@@ -1,4 +1,5 @@
 lang:
+  desc: "Lists my all shops."
   prefix: "&b[&aQuickShop&b]&6 My shop list &eTotal: {total}"
   coord: "&a{num}. &e{name}"
   nothing: "&eSorry, but you didn't have any shop."
@@ -9,3 +10,4 @@ lang:
     - "&aThis shop is &b{type} &aitems"
   selling: "SELLING"
   buying: "BUYING"
+

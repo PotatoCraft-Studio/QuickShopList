@@ -20,6 +20,7 @@ public final class QuickShopList extends JavaPlugin {
         Objects.requireNonNull(QuickShopAPI.getCommandManager()).registerCmd(CommandContainer.builder().executor(new ListCommand(this))
                 .permission("quickshop.list")
                 .prefix("list")
+                .description(getConfig().getString("lang.desc"))
                 .build());
     }
 
