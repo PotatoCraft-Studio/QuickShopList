@@ -1,0 +1,5 @@
+name: QuickShopList
+version: ${project.version}
+main: com.mcsunnyside.quickshop.list.quickshoplist.QuickShopList
+api-version: 1.13
+depend: [QuickShop]
