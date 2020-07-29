@@ -63,7 +63,7 @@
         </repository>
         <repository>
             <id>quickshop-repo</id>
-            <url>https://raw.githubusercontent.com/Ghost-chu/maven-repo/master/</url>
+            <url>https://repo.codemc.io/</url>
         </repository>
     </repositories>
 
@@ -75,11 +75,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer.quickshop</groupId>
+            <groupId>org.maxgamer</groupId>
             <artifactId>QuickShop</artifactId>
-            <version>4.0.3.2</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/QuickShop-4.0.3.2.jar</systemPath>
+            <version>4.0.3.3</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
