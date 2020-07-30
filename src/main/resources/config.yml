@@ -1,6 +1,6 @@
 lang:
-  desc: "Lists my all shops."
-  prefix: "&b[&aQuickShop&b]&6 My shop list &eTotal: {total}"
+  desc: "Lists all shops for myself or others."
+  prefix: "&b[&aQuickShop&b]&6 Shop list &eTotal: {total}"
   coord: "&a{num}. &e{name}"
   nothing: "&eSorry, but you didn't have any shop."
   hover:
