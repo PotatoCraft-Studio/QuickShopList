@@ -13,8 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.command.CommandProcesser;
 import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.ItemNMS;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class ListCommand implements CommandProcesser {
             stack.setItemMeta(meta);
             try {
                 messageTC.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM,
-                        new ComponentBuilder(Objects.requireNonNull(ItemNMS.saveJsonfromNMS(stack))).create()));
+                        new ComponentBuilder(Objects.requireNonNull(ReflectFactory.convertBukkitItemStackToJson(stack))).create()));
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -90,7 +90,7 @@ public class ListCommand implements CommandProcesser {
                 .replace("{x}", String.valueOf(shop.getLocation().getBlockX()))
                 .replace("{y}", String.valueOf(shop.getLocation().getBlockY()))
                 .replace("{z}", String.valueOf(shop.getLocation().getBlockZ()))
-                .replace("{price}", Util.format(shop.getPrice()))
+                .replace("{price}", Util.format(shop.getPrice(), shop))
                 .replace("{type}", shop.isSelling() ? plugin.getConfig().getString("lang.selling") : plugin.getConfig().getString("lang.buying")));
 
     }
