@@ -46,7 +46,7 @@ public class ListCommand implements CommandProcesser {
             playerToSee = Bukkit.getOfflinePlayer(strings[0]).getUniqueId();
         }
         Player player = (Player) commandSender;
-        List<Shop> shops = QuickShopAPI.getShopAPI().getPlayerAllShops(playerToSee);
+        List<Shop> shops = QuickShopAPI.getShopAPI().getShops(playerToSee);
         player.sendMessage(plugin.getConfig().getString("lang.prefix").replace("{total}", String.valueOf(shops.size())));
         if (shops.isEmpty()) {
             player.sendMessage(plugin.getConfig().getString("lang.nothing"));
