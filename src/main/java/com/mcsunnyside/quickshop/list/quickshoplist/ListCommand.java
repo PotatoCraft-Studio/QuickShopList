@@ -6,12 +6,11 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.command.CommandProcesser;
+import org.maxgamer.quickshop.command.CommandHandler;
 import org.maxgamer.quickshop.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.ReflectFactory;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ListCommand implements CommandProcesser {
+public class ListCommand implements CommandHandler<Player> {
     private QuickShopList plugin;
 
     public ListCommand(QuickShopList plugin) {
@@ -30,14 +29,10 @@ public class ListCommand implements CommandProcesser {
     }
 
     @Override
-    public void onCommand(CommandSender commandSender, String s, String[] strings) {
-        if (!(commandSender instanceof Player)) {
-            commandSender.sendMessage("This command cannot running by Console.");
-            return;
-        }
+    public void onCommand(Player commandSender, String s, String[] strings) {
         UUID playerToSee;
         if (strings.length < 1) {
-            playerToSee = ((Player) commandSender).getUniqueId();
+            playerToSee = commandSender.getUniqueId();
         } else {
             if (!commandSender.hasPermission("quickshop.list.others")) {
                 commandSender.sendMessage(MsgUtil.getMessage("no-permission", commandSender));
@@ -45,7 +40,7 @@ public class ListCommand implements CommandProcesser {
             }
             playerToSee = Bukkit.getOfflinePlayer(strings[0]).getUniqueId();
         }
-        Player player = (Player) commandSender;
+        Player player = commandSender;
         List<Shop> shops = QuickShopAPI.getShopAPI().getShops(playerToSee);
         player.sendMessage(plugin.getConfig().getString("lang.prefix").replace("{total}", String.valueOf(shops.size())));
         if (shops.isEmpty()) {
@@ -93,10 +88,5 @@ public class ListCommand implements CommandProcesser {
                 .replace("{price}", Util.format(shop.getPrice(), shop))
                 .replace("{type}", shop.isSelling() ? plugin.getConfig().getString("lang.selling") : plugin.getConfig().getString("lang.buying")));
 
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, String commandLabel, String[] cmdArg) {
-        return null;
     }
 }
