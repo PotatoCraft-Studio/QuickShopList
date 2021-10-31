@@ -9,10 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.command.CommandHandler;
-import org.maxgamer.quickshop.shop.Shop;
-import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 
@@ -23,6 +23,7 @@ import java.util.UUID;
 
 public class ListCommand implements CommandHandler<Player> {
     private QuickShopList plugin;
+    private QuickShopAPI api;
 
     public ListCommand(QuickShopList plugin) {
         this.plugin = plugin;
@@ -35,16 +36,15 @@ public class ListCommand implements CommandHandler<Player> {
             playerToSee = commandSender.getUniqueId();
         } else {
             if (!commandSender.hasPermission("quickshop.list.others")) {
-                commandSender.sendMessage(MsgUtil.getMessage("no-permission", commandSender));
+                plugin.getApi().getTextManager().of(commandSender, "no-permission").send();
                 return;
             }
             playerToSee = Bukkit.getOfflinePlayer(strings[0]).getUniqueId();
         }
-        Player player = commandSender;
-        List<Shop> shops = QuickShopAPI.getShopAPI().getShops(playerToSee);
-        player.sendMessage(plugin.getConfig().getString("lang.prefix").replace("{total}", String.valueOf(shops.size())));
+        List<Shop> shops = plugin.getApi().getShopManager().getPlayerAllShops(playerToSee);
+        commandSender.sendMessage(plugin.getConfig().getString("lang.prefix").replace("{total}", String.valueOf(shops.size())));
         if (shops.isEmpty()) {
-            player.sendMessage(plugin.getConfig().getString("lang.nothing"));
+            commandSender.sendMessage(plugin.getConfig().getString("lang.nothing"));
             return;
         }
         for (int i = 0; i < shops.size(); i++) {
@@ -75,7 +75,7 @@ public class ListCommand implements CommandHandler<Player> {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-            player.spigot().sendMessage(messageTC);
+            commandSender.spigot().sendMessage(messageTC);
         }
     }
 
@@ -85,7 +85,7 @@ public class ListCommand implements CommandHandler<Player> {
                 .replace("{x}", String.valueOf(shop.getLocation().getBlockX()))
                 .replace("{y}", String.valueOf(shop.getLocation().getBlockY()))
                 .replace("{z}", String.valueOf(shop.getLocation().getBlockZ()))
-                .replace("{price}", Util.format(shop.getPrice(), shop))
+                .replace("{price}", QuickShop.getInstance().getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()))
                 .replace("{type}", shop.isSelling() ? plugin.getConfig().getString("lang.selling") : plugin.getConfig().getString("lang.buying")));
 
     }
